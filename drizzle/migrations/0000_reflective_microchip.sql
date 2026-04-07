@@ -1,0 +1,80 @@
+CREATE TABLE `applications` (
+	`id` text PRIMARY KEY NOT NULL,
+	`job_id` text NOT NULL,
+	`status` text DEFAULT 'found' NOT NULL,
+	`applied_at` integer,
+	`interview_at` integer,
+	`pdf_path` text DEFAULT '' NOT NULL,
+	`cover_letter` text DEFAULT '' NOT NULL,
+	`notes` text DEFAULT '' NOT NULL,
+	`next_action` text DEFAULT '' NOT NULL,
+	`next_action_date` integer,
+	`contact_name` text DEFAULT '' NOT NULL,
+	`contact_email` text DEFAULT '' NOT NULL,
+	`contact_linkedin` text DEFAULT '' NOT NULL,
+	`created_at` integer DEFAULT (unixepoch()) NOT NULL,
+	`updated_at` integer DEFAULT (unixepoch()) NOT NULL,
+	FOREIGN KEY (`job_id`) REFERENCES `jobs`(`id`) ON UPDATE no action ON DELETE cascade
+);
+--> statement-breakpoint
+CREATE TABLE `evaluations` (
+	`id` text PRIMARY KEY NOT NULL,
+	`job_id` text NOT NULL,
+	`overall_score` real DEFAULT 0 NOT NULL,
+	`scores_json` text DEFAULT '{}' NOT NULL,
+	`swot_json` text DEFAULT '{}' NOT NULL,
+	`interview_strategy` text DEFAULT '' NOT NULL,
+	`ats_keywords` text DEFAULT '[]' NOT NULL,
+	`adapted_resume` text DEFAULT '' NOT NULL,
+	`summary` text DEFAULT '' NOT NULL,
+	`raw_ai_response` text DEFAULT '' NOT NULL,
+	`ai_provider` text DEFAULT 'gemini' NOT NULL,
+	`status` text DEFAULT 'pending' NOT NULL,
+	`error_message` text,
+	`created_at` integer DEFAULT (unixepoch()) NOT NULL,
+	`updated_at` integer DEFAULT (unixepoch()) NOT NULL,
+	FOREIGN KEY (`job_id`) REFERENCES `jobs`(`id`) ON UPDATE no action ON DELETE cascade
+);
+--> statement-breakpoint
+CREATE TABLE `jobs` (
+	`id` text PRIMARY KEY NOT NULL,
+	`company` text DEFAULT '' NOT NULL,
+	`role_title` text DEFAULT '' NOT NULL,
+	`jd_text` text DEFAULT '' NOT NULL,
+	`jd_url` text DEFAULT '' NOT NULL,
+	`salary_min` integer,
+	`salary_max` integer,
+	`salary_currency` text DEFAULT 'RUB' NOT NULL,
+	`salary_period` text DEFAULT 'month' NOT NULL,
+	`source` text DEFAULT '' NOT NULL,
+	`employment_type` text DEFAULT '' NOT NULL,
+	`experience_level` text DEFAULT '' NOT NULL,
+	`is_remote` integer DEFAULT false NOT NULL,
+	`company_logo_url` text DEFAULT '' NOT NULL,
+	`scrape_status` text DEFAULT 'pending' NOT NULL,
+	`scrape_error` text,
+	`created_at` integer DEFAULT (unixepoch()) NOT NULL,
+	`updated_at` integer DEFAULT (unixepoch()) NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE `profiles` (
+	`id` text PRIMARY KEY NOT NULL,
+	`full_name` text DEFAULT '' NOT NULL,
+	`email` text DEFAULT '' NOT NULL,
+	`phone` text DEFAULT '' NOT NULL,
+	`location` text DEFAULT '' NOT NULL,
+	`linkedin_url` text DEFAULT '' NOT NULL,
+	`github_url` text DEFAULT '' NOT NULL,
+	`portfolio_url` text DEFAULT '' NOT NULL,
+	`summary` text DEFAULT '' NOT NULL,
+	`cv_markdown` text DEFAULT '' NOT NULL,
+	`story_bank` text DEFAULT '[]' NOT NULL,
+	`target_roles` text DEFAULT '[]' NOT NULL,
+	`target_salary_min` integer,
+	`target_salary_max` integer,
+	`target_currency` text DEFAULT 'RUB' NOT NULL,
+	`target_locations` text DEFAULT '[]' NOT NULL,
+	`open_to_remote` integer DEFAULT true NOT NULL,
+	`created_at` integer DEFAULT (unixepoch()) NOT NULL,
+	`updated_at` integer DEFAULT (unixepoch()) NOT NULL
+);
